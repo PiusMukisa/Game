@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "attach",
             "pipeTransport": {
-                "pipeCwds://localhost:5001lder}",
+                "pipeCwd": "http://localhost:5001",
                 "pipeProgram": "enter the fully qualified path for the pipe program name, for example '/usr/bin/ssh'",
                 "pipeArgs": [],
                 "debuggerPath": "enter the path for the debugger on the target machine, for example ~/vsdbg/vsdbg"
