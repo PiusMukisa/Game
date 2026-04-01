@@ -1,11 +1,12 @@
+@using System.Drawing
 @inject GameState State
 
 <HeadContent>
     <style>
         :root {
-            --board-bg: yellow;
-            --player1: red;
-            --player2: blue;
+            --board-bg: @ColorTranslator.ToHtml(BoardColor);
+            --player1: @ColorTranslator.ToHtml(Player1Color);
+            --player2: @ColorTranslator.ToHtml(Player2Color);
         }
     </style>
 </HeadContent>
@@ -31,48 +32,39 @@
             @for (var col = 0; col < GameState.Columns; col++)
             {
                 var index = row * GameState.Columns + col;
-                <span class="container">
-                    <span class="@State.GetPieceClass(State.Board[index])"></span>
+                <span class="container" @onclick="() => PlayPiece(col)">
+                    <span class="hole @State.GetPieceClass(State.Board[index])"></span>
                 </span>
             }
         }
     </div>
-
-    @for (var i = 0; i < 42; i++)
-    {
-        <span class="@pieces[i]"></span>
-    }
 </div>
 
 @code {
-    private string[] pieces = new string[42];
-
     protected override void OnInitialized()
     {
         State.ResetBoard();
-        UpdatePieces();
     }
 
     private void ResetGame()
     {
         State.ResetBoard();
-        UpdatePieces();
     }
 
     private void PlayPiece(int column)
     {
         if (State.PlayPiece(column))
         {
-            UpdatePieces();
             StateHasChanged();
         }
     }
 
-    private void UpdatePieces()
-    {
-        for (int i = 0; i < pieces.Length; i++)
-        {
-            pieces[i] = State.GetPieceClass(State.Board[i]);
-        }
-    }
+    [Parameter]
+    public Color BoardColor { get; set; } = ColorTranslator.FromHtml("#102a54");
+
+    [Parameter]
+    public Color Player1Color { get; set; } = ColorTranslator.FromHtml("#f2c14e");
+
+    [Parameter]
+    public Color Player2Color { get; set; } = ColorTranslator.FromHtml("#ef476f");
 }

@@ -1,5 +1,6 @@
 @page "/"
 @namespace ConnectFour.Pages
+@using Microsoft.AspNetCore.Components.Web
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,7 @@
     <title>ConnectFour</title>
     <base href="~/" />
     <link rel="stylesheet" href="css/app.css" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
     <app>
