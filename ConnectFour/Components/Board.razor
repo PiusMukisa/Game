@@ -1,0 +1,78 @@
+@inject GameState State
+
+<HeadContent>
+    <style>
+        :root {
+            --board-bg: yellow;
+            --player1: red;
+            --player2: blue;
+        }
+    </style>
+</HeadContent>
+
+<div class="board-shell">
+    <div class="board-header">
+        <div class="status">@State.StatusMessage</div>
+        <button class="restart" @onclick="ResetGame">Restart game</button>
+    </div>
+
+    <div class="column-controls">
+        @for (var col = 0; col < GameState.Columns; col++)
+        {
+            <button class="drop-button" @onclick="() => PlayPiece(col)" disabled="@State.GameOver || State.GetLowestEmptyRow(col) < 0">
+                ▼
+            </button>
+        }
+    </div>
+
+    <div class="board">
+        @for (var row = 0; row < GameState.Rows; row++)
+        {
+            @for (var col = 0; col < GameState.Columns; col++)
+            {
+                var index = row * GameState.Columns + col;
+                <span class="container">
+                    <span class="@State.GetPieceClass(State.Board[index])"></span>
+                </span>
+            }
+        }
+    </div>
+
+    @for (var i = 0; i < 42; i++)
+    {
+        <span class="@pieces[i]"></span>
+    }
+</div>
+
+@code {
+    private string[] pieces = new string[42];
+
+    protected override void OnInitialized()
+    {
+        State.ResetBoard();
+        UpdatePieces();
+    }
+
+    private void ResetGame()
+    {
+        State.ResetBoard();
+        UpdatePieces();
+    }
+
+    private void PlayPiece(int column)
+    {
+        if (State.PlayPiece(column))
+        {
+            UpdatePieces();
+            StateHasChanged();
+        }
+    }
+
+    private void UpdatePieces()
+    {
+        for (int i = 0; i < pieces.Length; i++)
+        {
+            pieces[i] = State.GetPieceClass(State.Board[i]);
+        }
+    }
+}
